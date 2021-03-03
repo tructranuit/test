@@ -1,0 +1,1 @@
+# https://stackoverflow.com/questions/12921452/android-download-a-single-file-in-many-parts
