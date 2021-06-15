@@ -1,1 +1,31 @@
 # https://stackoverflow.com/questions/12921452/android-download-a-single-file-in-many-parts
+
+
+
+
+fun encryptFile() {
+        try {
+            val key = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDRF"
+            val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+            val skey = SecretKeySpec(key.toByteArray(Charset.defaultCharset()), "AES")
+            cipher.init(Cipher.ENCRYPT_MODE, skey, GCMParameterSpec(128, ByteArray(12)))
+
+            val fis = FileInputStream("/sdcard/ota.zip")
+            val fos = FileOutputStream(File("/sdcard/ota_test.bin"))
+            val cos = CipherOutputStream(fos, cipher)
+            var b : Int
+            val d = ByteArray(1024)
+            while (fis.read(d).also { b = it } != -1) {
+                cos.write(d, 0, b)
+                cos.flush()
+            }
+            cos.flush()
+            cos.close()
+            fis.close()
+
+            Log.d("AAAAAAAAAAAA", "DONE")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
