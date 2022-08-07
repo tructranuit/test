@@ -1,4 +1,5 @@
 # https://stackoverflow.com/questions/12921452/android-download-a-single-file-in-many-parts
+# https://github.com/dvsekhvalnov/jose-jwt/issues/92
 
 
 ./gradlew assembleRelease \
