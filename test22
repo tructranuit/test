@@ -1,0 +1,38 @@
+// set up colors for bottom navigation
+bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
+bottomNavigation.setAccentColor(ContextCompat.getColor(requireActivity(), R.color.blue_color));
+bottomNavigation.setForceTint(true);
+bottomNavigation.setDefaultBackgroundColor(ContextCompat.getColor(requireActivity(), android.R.color.white));
+
+AHBottomNavigationAdapter ahBottomNavigationAdapter = new AHBottomNavigationAdapter(requireActivity(), R.menu.app_menu);
+ahBottomNavigationAdapter.setupWithBottomNavigation(bottomNavigation);
+AnimationDrawable iconDrawable = (AnimationDrawable) bottomNavigation.getItem(0).getDrawable(requireActivity());
+iconDrawable.start();
+
+
+
+drawable/animation_list.xml
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item android:drawable="@drawable/ic_home" android:duration="500" />
+    <item android:drawable="@drawable/ic_feed" android:duration="100" />
+    <item android:drawable="@drawable/ic_tab_community" android:duration="300" />
+</animation-list>|
+
+
+menu/app_menu.xml
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title=""
+        android:icon="@drawable/animation_list" />
+
+    <item
+        android:title=""
+        android:icon="@drawable/ic_1" />
+
+    <item
+        android:title=""
+        android:icon="@drawable/ic_2" />
+</menu>
