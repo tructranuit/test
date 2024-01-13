@@ -1,3 +1,22 @@
+public boolean isUsingCustomInputMethod() {
+    InputMethodManager imm = (InputMethodManager) mCtx.getSystemService(
+        Context.INPUT_METHOD_SERVICE);
+    List<InputMethodInfo> mInputMethodProperties = imm.getEnabledInputMethodList();
+    final int N = mInputMethodProperties.size();
+    for (int i = 0; i < N; i++) {
+        InputMethodInfo imi = mInputMethodProperties.get(i);
+        if (imi.getId().equals(
+            Settings.Secure.getString(mCtx.getContentResolver(),
+                    Settings.Secure.DEFAULT_INPUT_METHOD))) {
+            if ((imi.getServiceInfo().applicationInfo.flags & 
+                ApplicationInfo.FLAG_SYSTEM) == 0) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 // set up colors for bottom navigation
 bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
 bottomNavigation.setAccentColor(ContextCompat.getColor(requireActivity(), R.color.blue_color));
