@@ -1,0 +1,65 @@
+package org.example
+
+import java.io.File
+import java.io.FileInputStream
+
+fun main() {
+    println("Hello World!")
+
+
+    val file = File("C:\\Users\\mtthi\\Downloads\\test\\orca_share_media1710866463756_7175894052400383065.txt")
+    val inputStream = FileInputStream(file)
+    inputStream.bufferedReader().forEachLine {
+        if (it.contains("")) {
+            System.out.println(it)
+
+            val name = StringBuilder()
+            val mobile = StringBuilder()
+            val txn = StringBuilder()
+            val indexName = it.indexOf("\"\"name\"\":\"\"")
+            var index = indexName
+
+            if (indexName > 0) {
+                index = indexName + 11
+                while (true) {
+                    val x = it[index]
+                    if (x != '"') {
+                        name.append(x)
+                    } else {
+                        break
+                    }
+                    index++
+                }
+            }
+            val indexMobile = it.indexOf("\"\"mobile\"\":")
+            if (indexMobile > 0) {
+                index = indexMobile + 13
+                while (true) {
+                    val x = it[index]
+                    if (x != '"') {
+                        mobile.append(x)
+                    } else {
+                        break
+                    }
+                    index++
+                }
+            }
+
+            val indexTxn = it.indexOf("\"\"paymentReference\"\":\"\"")
+            if (indexTxn > 0) {
+                index = indexTxn + 23
+                while (true) {
+                    val x = it[index]
+                    if (x != '"') {
+                        txn.append(x)
+                    } else {
+                        break
+                    }
+                    index++
+                }
+            }
+            System.out.println("$txn|$name|$mobile")
+        }
+
+    }
+}
