@@ -1,3 +1,70 @@
+
+    @Override
+    public void showLoadingDialog() {
+        if (baseLoadingDialog == null) {
+            baseLoadingDialog = new ProgressDialog(getActivity());
+            baseLoadingDialog.setMessage("Loading...");
+            baseLoadingDialog.setCancelable(false);
+        }
+        initLoadingHandler();
+        if (!baseLoadingDialog.isShowing()) {
+            baseLoadingDialog.show();
+        }
+    }
+
+    private void initLoadingHandler() {
+        if (loadingCallback == null) {
+            loadingCallback = () -> {
+                dismissImmediately();
+                BaseFragment.this.loadingHandler = null;
+            };
+        }
+        if (loadingHandler == null) {
+            loadingHandler = new Handler(Looper.getMainLooper());
+        } else {
+            loadingHandler.removeCallbacks(loadingCallback);
+        }
+        loadingStartTiming = SystemClock.elapsedRealtime();
+    }
+
+    @Override
+    public void showProgressDialogMessage(String message) {
+        if (baseLoadingDialog == null) {
+            baseLoadingDialog = new ProgressDialog(requireActivity());
+        }
+
+        baseLoadingDialog.setMessage(message);
+
+        initLoadingHandler();
+
+        if (!baseLoadingDialog.isShowing()) {
+            baseLoadingDialog.setCancelable(false);
+            baseLoadingDialog.show();
+        }
+    }
+
+    @Override
+    public void dismissLoadingDialog() {
+        if (loadingHandler == null) {
+            dismissImmediately();
+        } else {
+            long loadingDuration = SystemClock.elapsedRealtime() - loadingStartTiming;
+            long delayDismiss = (loadingDuration < 300) ? (300 - loadingDuration) : 0;
+            loadingHandler.postDelayed(loadingCallback, delayDismiss);
+        }
+    }
+
+    private void dismissImmediately() {
+        if (baseLoadingDialog != null) {
+            baseLoadingDialog.dismiss();
+            baseLoadingDialog = null;
+        }
+    }
+
+
+
+
+
 Use this class to declare a HeightWrappingViewPager:
 import android.content.Context;
 import android.support.v4.view.ViewPager;
