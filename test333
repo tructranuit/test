@@ -1,0 +1,18 @@
+@SuppressLint("PrivateApi")
+fun disableBatteryOptimizationForApp(packageName: String) {
+    try {
+        val serviceManagerClass = Class.forName("android.os.ServiceManager")
+        val getServiceMethod = serviceManagerClass.getMethod("getService", String::class.java)
+        val binder = getServiceMethod.invoke(null, "deviceidle") as IBinder
+
+        val deviceIdleControllerStubClass = Class.forName("android.os.IDeviceIdleController\$Stub")
+        val asInterfaceMethod = deviceIdleControllerStubClass.getMethod("asInterface", IBinder::class.java)
+        val deviceIdleController = asInterfaceMethod.invoke(null, binder)
+
+        val whitelistMethod = deviceIdleController.javaClass.getMethod("addPowerSaveWhitelistApp", String::class.java)
+        whitelistMethod.invoke(deviceIdleController, packageName)
+
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
